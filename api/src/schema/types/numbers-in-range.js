@@ -6,9 +6,11 @@ const NumbersInRange = new GraphQLObjectType({
   fields: {
     sum: {
       type: new GraphQLNonNull(GraphQLInt),
+      description: "Sum of all whole numbers in the range",
     },
     count: {
       type: new GraphQLNonNull(GraphQLInt),
+      description: "Count of all whole numbers in the range",
     },
   },
 });
