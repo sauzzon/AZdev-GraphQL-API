@@ -18,12 +18,8 @@ const QueryType = new GraphQLObjectType({
       type: GraphQLString,
       description: "The current time in ISO UTC",
       resolve: () => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            const isoString = new Date().toISOString();
-            resolve(isoString.slice(11, 19));
-          }, 5000);
-        });
+        const isoString = new Date().toISOString();
+        return isoString.slice(11, 19);
       },
     },
     numbersInRange: {
