@@ -10,6 +10,11 @@ const pgApiWrapper = async () => {
       const pgResp = await pgQuery(sqls.tasksLatest);
       return pgResp.rows;
     },
+
+    userInfo: async (userId) => {
+      const pgResp = await pgQuery(sqls.usersFromIds, { $1: [userId] });
+      return pgResp.rows[0];
+    },
   };
 };
 export default pgApiWrapper;

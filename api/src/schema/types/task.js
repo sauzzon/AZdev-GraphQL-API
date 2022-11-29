@@ -7,6 +7,8 @@ import {
   GraphQLString,
 } from "graphql";
 
+import User from "./user";
+
 const Task = new GraphQLObjectType({
   name: "Task",
   fields: {
@@ -26,6 +28,10 @@ const Task = new GraphQLObjectType({
     createdAt: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: (source) => source.createdAt.toISOString(),
+    },
+    author: {
+      type: new GraphQLNonNull(User),
+      resolve: (source, args, { pgApi }) => pgApi.userInfo(source.userId),
     },
   },
 });
