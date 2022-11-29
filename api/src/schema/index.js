@@ -1,5 +1,6 @@
 import {
   GraphQLSchema,
+  GraphQLList,
   GraphQLObjectType,
   GraphQLString,
   GraphQLNonNull,
@@ -7,6 +8,7 @@ import {
   printSchema,
 } from "graphql";
 
+import Task from "./types/task";
 import NumbersInRange from "./types/numbers-in-range";
 import { numbersInRangeObject } from "../utils";
 
@@ -14,6 +16,20 @@ const QueryType = new GraphQLObjectType({
   name: "Query",
   description: "The root query entry for the API",
   fields: {
+    taskMainList: {
+      type: new GraphQLList(new GraphQLNonNull(Task)),
+      resolve: async (source, args, { pgPool }) => {
+        const pgResp = await pgPool.query(`
+          SELECT id, content, tags,
+                  approach_count AS "approachCount", created_at AS "createdAt"
+          FROM azdev.tasks
+          WHERE is_private = FALSE
+          ORDER BY created_at DESC
+          LIMIT 100
+          `);
+        return pgResp.rows;
+      },
+    },
     currentTime: {
       type: GraphQLString,
       description: "The current time in ISO UTC",
