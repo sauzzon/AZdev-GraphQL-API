@@ -6,9 +6,20 @@ const pgApiWrapper = async () => {
   const pgQuery = (text, params = {}) =>
     pgPool.query(text, Object.values(params));
   return {
-    taskMainList: async () => {
-      const pgResp = await pgQuery(sqls.tasksLatest);
-      return pgResp.rows;
+    // taskMainList: async () => {
+    //   const pgResp = await pgQuery(sqls.tasksLatest);
+    //   return pgResp.rows;
+    // },
+
+    tasksByTypes: async (types) => {
+      const results = types.map(async (type) => {
+        if (type === "latest") {
+          const pgResp = await pgQuery(sqls.tasksLatest);
+          return pgResp.rows;
+        }
+        throw Error("Unsupported type");
+      });
+      return Promise.all(results);
     },
 
     usersInfo: async (userIds) => {
