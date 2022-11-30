@@ -11,7 +11,7 @@ import { numbersInRangeObject } from "../utils";
 import Task from "./types/task";
 const QueryType = new GraphQLObjectType({
   name: "Query",
-  fields: {
+  fields: () => ({
     currentTime: {
       type: GraphQLString,
       resolve: () => {
@@ -46,6 +46,6 @@ const QueryType = new GraphQLObjectType({
         return loaders.tasks.load(args.id);
       },
     },
-  },
+  }),
 });
 export default QueryType;
