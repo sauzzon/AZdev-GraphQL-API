@@ -7,9 +7,11 @@ import morgan from "morgan";
 import * as config from "./config";
 import pgApiWrapper from "./db/pg-api";
 import DataLoader from "dataloader";
+import mongoApiWrapper from "./db/mongo-api";
 
 async function main() {
   const pgApi = await pgApiWrapper();
+  const mongoApi = await mongoApiWrapper();
   const server = express();
   server.use(cors());
   server.use(morgan("dev"));
@@ -25,6 +27,9 @@ async function main() {
       tasksByTypes: new DataLoader((types) => pgApi.tasksByTypes(types)),
       searchResults: new DataLoader((searchTerms) =>
         pgApi.searchResults(searchTerms)
+      ),
+      detailLists: new DataLoader((approachIds) =>
+        mongoApi.detailLists(approachIds)
       ),
     };
 
