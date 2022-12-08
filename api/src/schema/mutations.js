@@ -1,8 +1,20 @@
-import { GraphQLObjectType } from "graphql";
+import { GraphQLNonNull, GraphQLObjectType } from "graphql";
+import UserPayload from "./types/payload-user";
+import UserInput from "./types/input-user";
 
 const MutationType = new GraphQLObjectType({
   name: "Mutation",
-  fields: () => ({}),
+  fields: () => ({
+    userCreate: {
+      type: new GraphQLNonNull(UserPayload),
+      args: {
+        input: { type: new GraphQLNonNull(UserInput) },
+      },
+      resolve: async (source, { input }, { mutators }) => {
+        return mutators.userCreate({ input });
+      },
+    },
+  }),
 });
 
 export default MutationType;
