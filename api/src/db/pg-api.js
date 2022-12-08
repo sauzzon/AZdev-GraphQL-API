@@ -57,6 +57,7 @@ const pgApiWrapper = async () => {
       });
       return Promise.all(results);
     },
+    mutators: {},
   };
 };
 export default pgApiWrapper;

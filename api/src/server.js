@@ -33,9 +33,14 @@ async function main() {
       ),
     };
 
+    const mutators = {
+      ...pgApi.mutators,
+      ...mongoApi.mutators,
+    };
+
     graphqlHTTP({
       schema,
-      context: { loaders },
+      context: { loaders, mutators },
       graphiql: true,
       customFormatErrorFn: (err) => {
         const errorReport = {
