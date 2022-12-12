@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useStore } from "../store";
 import Errors from "./Errors";
 
+import { FULL_TASK_FRAGMENT } from "./TaskPage";
+
 const TASK_CREATE = `
   mutation taskCreate($input: TaskInput! ) {
     taskCreate(input: $input) {
@@ -11,9 +13,11 @@ const TASK_CREATE = `
       }
       task {
         id
+        ...FullTaskData
       }
     }
   }
+  ${FULL_TASK_FRAGMENT}
 `;
 
 export default function NewTask() {
