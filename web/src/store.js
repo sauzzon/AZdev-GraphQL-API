@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import fetch from 'cross-fetch';
+import React, { useState } from "react";
+import fetch from "cross-fetch";
 
-import * as config from './config';
+import * as config from "./config";
 
 const initialLocalAppState = {
-  component: { name: 'Home', props: {} },
-  user: JSON.parse(window.localStorage.getItem('azdev:user')),
+  component: { name: "Home", props: {} },
+  user: JSON.parse(window.localStorage.getItem("azdev:user")),
 };
 
 // The useStoreObject is a custom hook function designed
@@ -64,6 +64,12 @@ export const useStoreObject = () => {
      * Pass both requestText and variables as body params
      *
      */
+    const gsResp = await fetch(config.GRAPHQL_SERVER_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: requestText, variables }),
+    }).then((response) => response.json());
+    return gsResp;
   };
 
   // In React components, the following is the object you get
