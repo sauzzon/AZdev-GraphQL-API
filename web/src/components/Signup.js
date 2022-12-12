@@ -28,7 +28,7 @@ export default function Signup() {
       return setUIErrors([{ message: "Password mismatch" }]);
     }
 
-    const { data } = await request(USER_CREATE, {
+    const { data, errors: rootErrors } = await request(USER_CREATE, {
       variables: {
         input: {
           firstName: input.firstName.value,
@@ -38,6 +38,9 @@ export default function Signup() {
         },
       },
     });
+    if (rootErrors) {
+      return setUIErrors(rootErrors);
+    }
 
     const { errors, user, authToken } = data.userCreate;
 
