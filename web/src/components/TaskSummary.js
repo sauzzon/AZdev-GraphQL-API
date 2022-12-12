@@ -1,10 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import { useStore } from '../store';
+import { useStore } from "../store";
 
-/** GIA NOTES
- * Define GraphQL Operations here...
- */
+export const TASK_SUMMARY_FRAGMENT = `
+  fragment TaskSummary on Task {
+    content
+    author {
+      username
+    }
+    tags
+  }
+`;
 
 export default function TaskSummary({ task, link = false }) {
   const { AppLink } = useStore();
