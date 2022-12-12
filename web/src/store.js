@@ -59,7 +59,7 @@ export const useStoreObject = () => {
   // and return the GraphQL response object
   const request = async (requestText, { variables } = {}) => {
     const headers = state.user
-      ? { Authorization: "Bearer" + state.user.authToken }
+      ? { Authorization: "Bearer " + state.user.authToken }
       : {};
     const gsResp = await fetch(config.GRAPHQL_SERVER_URL, {
       method: "post",
