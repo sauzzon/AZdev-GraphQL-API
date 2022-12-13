@@ -1,10 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { useStore } from '../store';
+import { useStore } from "../store";
 
-/** GIA NOTES
- * Define GraphQL operations here...
- */
+const SEARCH_RESULTS = `
+  query searchResults($searchTerm: String!) {
+    searchResults: search(term: $searchTerm) {
+      type: __typename
+      id
+      content
+      ... on Task {
+        approachCount
+      }
+      ... on Approach {
+        task {
+          id
+          content
+        }
+      }
+    }
+  }
+`;
 
 export default function Search({ searchTerm = null }) {
   const { setLocalAppState, request, AppLink } = useStore();
@@ -15,23 +30,17 @@ export default function Search({ searchTerm = null }) {
     const term = event.target.search.value;
 
     setLocalAppState({
-      component: { name: 'Search', props: { searchTerm: term } },
+      component: { name: "Search", props: { searchTerm: term } },
     });
   };
 
   useEffect(() => {
     if (searchTerm) {
-      /** GIA NOTES
-       *
-       * 1) Invoke the query for search:
-       *   - Variable `searchTerm` holds the search input value
-       *   (You can't use `await` here but `promise.then` is okay)
-       *
-       * 2) Change the setSearchResults call below to use the returned data:
-       *
-       */
-
-      setSearchResults([]); // TODO: Replace empty array with API_RESP_FOR_searchResults
+      request(SEARCH_RESULTS, { variables: { searchTerm } }).then(
+        ({ data }) => {
+          setSearchResults(data.searchResults);
+        }
+      );
     }
   }, [searchTerm, request]);
 
@@ -67,22 +76,20 @@ export default function Search({ searchTerm = null }) {
               <div key={index} className="box box-primary">
                 <AppLink
                   to="TaskPage"
-                  taskId={
-                    item.type === 'Approach' ? item.task.id : item.id
-                  }
+                  taskId={item.type === "Approach" ? item.task.id : item.id}
                 >
-                  <span className="search-label">{item.type}</span>{' '}
+                  <span className="search-label">{item.type}</span>{" "}
                   {item.content.substr(0, 250)}
                 </AppLink>
                 <div className="search-sub-line">
-                  {item.type === 'Task'
+                  {item.type === "Task"
                     ? `Approaches: ${item.approachCount}`
                     : `Task: ${item.task.content.substr(0, 250)}`}
                 </div>
               </div>
             ))}
           </div>
-          <AppLink to="Home">{'<'} Home</AppLink>
+          <AppLink to="Home">{"<"} Home</AppLink>
         </div>
       )}
     </div>
