@@ -4,9 +4,11 @@ import { useStore } from "../store";
 import Search from "./Search";
 import TaskSummary, { TASK_SUMMARY_FRAGMENT } from "./TaskSummary";
 
-const TASK_MAIN_LIST = `
-  query taskMainList{
-    taskMainList{
+import { gql } from "@apollo/client";
+
+const TASK_MAIN_LIST = gql`
+  query taskMainList {
+    taskMainList {
       id
       ...TaskSummary
     }
@@ -15,14 +17,14 @@ const TASK_MAIN_LIST = `
 `;
 
 export default function Home() {
-  const { request } = useStore();
+  const { query } = useStore();
   const [taskList, setTaskList] = useState(null);
 
   useEffect(() => {
-    request(TASK_MAIN_LIST).then(({ data }) => {
+    query(TASK_MAIN_LIST).then(({ data }) => {
       setTaskList(data.taskMainList);
     });
-  }, [request]);
+  }, [query]);
 
   if (!taskList) {
     return <div className="loading">Loading...</div>;
