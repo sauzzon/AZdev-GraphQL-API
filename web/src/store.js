@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import * as config from "./config";
 
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/link-context";
 
 const initialLocalAppState = {
   component: { name: "Home", props: {} },
@@ -59,6 +60,16 @@ export const useStoreObject = () => {
       </a>
     );
   };
+
+  const authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: state.user ? `Bearer ${state.user.authToken}` : "",
+      },
+    };
+  });
+  client.setLink(authLink.concat(httpLink));
 
   const query = async (query, { variables } = {}) => {
     const resp = await client.query({ query, variables });
