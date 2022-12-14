@@ -9,7 +9,7 @@ const initialLocalAppState = {
   user: JSON.parse(window.localStorage.getItem("azdev:user")),
 };
 
-const httpLink = new HttpLink({ url: config.GRAPHQL_SERVER_URL });
+const httpLink = new HttpLink({ uri: config.GRAPHQL_SERVER_URL });
 const cache = new InMemoryCache();
 const client = new ApolloClient({ link: httpLink, cache });
 
