@@ -41,6 +41,10 @@ export const useStoreObject = () => {
     setState((currentState) => {
       return { ...currentState, ...newState };
     });
+    // Reset cache when users login/logout
+    if (newState.user || newState.user === null) {
+      client.resetStore();
+    }
   };
 
   // This is a component that can be used in place of
