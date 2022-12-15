@@ -33,7 +33,7 @@ export default function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     const input = event.target.elements;
-    const { data, errors: rootErrors } = await loginUser(USER_LOGIN, {
+    const { data, errors: rootErrors } = await loginUser({
       variables: {
         input: {
           username: input.username.value,
