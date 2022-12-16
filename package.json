@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "A searchable library of practical micro-documentation, errors and solutions, and general tips for software developers.",
   "scripts": {
-    "start-dbs": "docker-compose -f dev-dbs/docker.yml up",
+    "start-dbs": "sudo docker-compose -f dev-dbs/docker.yml up",
     "api-server": "(cd api && nodemon -r esm src/server.js)",
     "web-server": "(cd web/src && rimraf .cache dist && parcel index.html)",
-    "start-blank-dbs": "docker-compose -f dev-dbs/docker-blank.yml up"
+    "start-blank-dbs": "sudo docker-compose -f dev-dbs/docker-blank.yml up"
   },
   "dependencies": {
     "@apollo/client": "^3.7.2",
